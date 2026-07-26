@@ -67,6 +67,7 @@ class Brick:
                 return
         return
 
+
 class Ball:
     """ Ball Actor class. """
 
@@ -90,3 +91,45 @@ class Ball:
         """ Renders the Ball. """
         colour = cfg.BALL_COLOR
         pygame.draw.circle(screen, colour, self.rect.center, self.radius)
+
+
+class Bonus:
+    """
+        Falling power-up dropped by a destroyed Brick.
+
+        Each bonus has a `kind` (one of cfg.BONUS_TYPES), a unique display
+        letter and a color, both looked up from cfg.BONUS_ICONS / cfg.BONUS_COLORS.
+        It falls straight down until it's caught by the Paddle (or leaves the
+        screen), at which point `ApplyBonus` in the game screen applies its effect.
+    """
+
+    _font = None  # Lazily created; needs the pygame display/font module to be init'd
+
+    def __init__(self, x: int, y: int, kind: str) -> None:
+        self.kind = kind
+        self.letter = cfg.BONUS_ICONS[kind]
+        self.color = cfg.BONUS_COLORS[kind]
+        self.vy = cfg.BONUS_FALL_SPEED
+
+        size = cfg.BONUS_SIZE
+        self.rect = pygame.Rect(0, 0, size, size)
+        self.rect.center = (x, y)
+
+        if Bonus._font is None:
+            Bonus._font = pygame.font.SysFont("consolas", 18, bold=True)
+
+    def update(self) -> None:
+        """ Moves the Bonus down the screen for the current frame. """
+        self.rect.y += self.vy
+
+    def draw(self, screen: pygame.Surface) -> None:
+        """ Renders the Bonus as a colored badge with its letter. """
+        pygame.draw.rect(screen, self.color, self.rect, border_radius=6)
+        pygame.draw.rect(screen, cfg.WHITE, self.rect, width=2, border_radius=6)
+
+        label = Bonus._font.render(self.letter, True, cfg.BLACK)
+        screen.blit(label, label.get_rect(center=self.rect.center))
+
+    def is_off_screen(self) -> bool:
+        """ True once the Bonus has fallen past the bottom of the screen. """
+        return self.rect.top > cfg.HEIGHT

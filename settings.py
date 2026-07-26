@@ -37,7 +37,36 @@ MAX_BALL_SPEED_X = 8
 
 # --- Bonuses ---------------------------------------------------------------------
 BONUS_PROBABILITY = 0.3  # Chance that destroyed brick will drop a bonus
-BONUS_TYPES = ["extend", "multiball", "laser", "extra_life"]
+BONUS_TYPES = [
+    "extend",
+    "shrink",
+    "multiball",
+    "laser",
+    "extra_life",
+    "speed_up",
+    "speed_down",
+]
+BONUS_SIZE = 24        # Width/height of the falling power-up icon
+BONUS_FALL_SPEED = 3   # How fast a power-up falls towards the paddle
+
+# Paddle size effects
+PADDLE_EXTEND_STEP = 40   # Pixels added to paddle width by "extend"
+PADDLE_SHRINK_STEP = 40   # Pixels removed from paddle width by "shrink"
+PADDLE_MIN_WIDTH = 50
+PADDLE_MAX_WIDTH = 200
+
+# Ball speed effects
+BALL_SPEED_MULTIPLIER = 1.3  # Multiplier applied by speed_up / (1/x) by speed_down
+BALL_MIN_SPEED = 2.5
+BALL_MAX_SPEED = 12
+
+# Laser bonus
+LASER_WIDTH, LASER_HEIGHT = 4, 15
+LASER_SPEED = 10
+LASER_COOLDOWN = 15  # Frames between shots while the "laser" bonus is active
+
+# Lives
+LIVES_START = 3
 
 # --- Visual Effects -----------------------------------------------------------
 TRAIL_LENGTH = 6  # Ball's Motion Trail Length
@@ -60,6 +89,28 @@ CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
 PADDLE_COLOR = CYAN
 BALL_COLOR = WHITE
+BLUE = (60, 140, 255)
+
+# Power-up letter (icon) and color catalog, keyed by BONUS_TYPES entry
+BONUS_ICONS = {
+    "extend": "E",
+    "shrink": "S",
+    "multiball": "M",
+    "laser": "L",
+    "extra_life": "+",
+    "speed_up": "F",     # Faster
+    "speed_down": "W",   # sloW
+}
+
+BONUS_COLORS = {
+    "extend": GREEN,
+    "shrink": RED,
+    "multiball": CYAN,
+    "laser": YELLOW,
+    "extra_life": MAGENTA,
+    "speed_up": ORANGE,
+    "speed_down": BLUE,
+}
 
 # Brick Color and HP
 BRICK_COLORS = {
